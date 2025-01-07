@@ -1,43 +1,24 @@
-import 'dart:math';
+import 'package:trabalho_prog_2/search_binary_tree.dart';
+import 'package:trabalho_prog_2/node.dart';
 
-part 'node.dart';
-
-class AVLTree<T extends num> {
-  Node<T>? root;
-
-  Node<T> insert(T value) {
-    if (root == null) return root = Node(value);
-    return root!.insert(value);
-  }
-
-  Node<T>? search(T value) {
-    if (root == null) return null;
-    return root!.search(value);
-  }
-
-  Node<T>? delete(T value) {
-    if (root == null) return null;
-    if (root!.value == value) return root;
-    Node<T> parent = root!;
-    while (![parent.left?.value, parent.right?.value].contains(value)) {
-      if (value < parent.value && parent.left != null) {
-        parent = parent.left!;
-        continue;
-      }
-      if (value > parent.value && parent.right != null) {
-        parent = parent.right!;
-        continue;
-      }
-      return null;
-    }
-    if (parent.left?.value == value) return parent.deleteLeft();
-    if (parent.right?.value == value) return parent.deleteRight();
-    return null;
-  }
-
+/// Árvore AVL
+class AVLTree<T extends num> extends SearchBinaryTree<T> {
+  /// Insere um valor na árvore, balanceia a árvore e retorna o novo nó
   @override
-  String toString([int depth = 0]) {
-    if (root == null) return 'Árvore vazia';
-    return root!.toString();
+  Node<T> insert(T value) {
+    final inserted = super.insert(value);
+    balance();
+    return inserted;
   }
+
+  /// Remove um valor da árvore, balanceia a árvore e retorna o nó removido
+  @override
+  Node<T>? delete(T value) {
+    final removed = super.delete(value);
+    balance();
+    return removed;
+  }
+
+  /// Balanceia a árvore
+  void balance() => root?.balance();
 }
