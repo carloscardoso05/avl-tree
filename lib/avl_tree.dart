@@ -1,24 +1,43 @@
-import 'package:trabalho_prog_2/search_binary_tree.dart';
 import 'package:trabalho_prog_2/node.dart';
 
 /// Árvore AVL
-class AVLTree<T extends num> extends SearchBinaryTree<T> {
-  /// Insere um valor na árvore, balanceia a árvore e retorna o novo nó
-  @override
-  Node<T> insert(T value) {
-    final inserted = super.insert(value);
-    balance();
-    return inserted;
+class AVLTree {
+  /// Nó raiz
+  Node? root;
+
+  /// Insere um valor na árvore
+  void insert(int key) {
+    root = insertKey(root, key);
   }
 
-  /// Remove um valor da árvore, balanceia a árvore e retorna o nó removido
-  @override
-  Node<T>? delete(T value) {
-    final removed = super.delete(value);
-    balance();
-    return removed;
+  /// Remove um valor da árvore
+  void delete(int key) {
+    root = deleteKey(root, key);
   }
 
-  /// Balanceia a árvore
-  void balance() => root?.balance();
+  /// Insere vários valores na árvore
+  void insertAll(Iterable<int> keys) {
+    keys.forEach(insert);
+  }
+
+  /// Remove vários valores da árvore
+  void deleteAll(Iterable<int> keys) {
+    keys.forEach(delete);
+  }
+
+  /// Representação em texto da árvore
+  @override
+  String toString({bool showBF = false}) {
+    if (root == null) return 'Árvore vazia';
+    String header = '-----------' * 5;
+    header += '\nÁrvore AVL\n';
+    header += '↑ Direita\n';
+    header += '↓ Esquerda\n';
+    return header + root!.toString(showBF: showBF);
+  }
+
+  /// Imprime a árvore 
+  void printTree({bool showBF = false}) {
+    print(toString(showBF: showBF));
+  }
 }
